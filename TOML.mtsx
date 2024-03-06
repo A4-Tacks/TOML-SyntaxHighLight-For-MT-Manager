@@ -1,7 +1,7 @@
 {
     // @author: A4-Tacks
     // @email: <wdsjxhno1001@163.com>
-    // @last-edit-date: 2024-01-25
+    // @last-edit-date: 2024-03-06
     // @repo: https://github.com/A4-Tacks/TOML-SyntaxHighLight-For-MT-Manager
     name: ["TOML", ".toml"]
     hide: false
@@ -17,6 +17,8 @@
         "unquoted-key": /(?:[A-Za-z0-9\-_]+)/
         "simple-key": /(?:/+include("unquoted-key")+/|/+include("quoted-key")+/)/ // (strEscape,error)
         "key": /(?:/+include("simple-key")+/(?:/+include("ws")+/\./+include("ws")+include("simple-key")+/)*)/ // (strEscape,error,strEscape,error)
+        "nonkey": /(?<!\.\s?\s?\s?)/
+        "tododot": /(?:(?:\./+include("ws")+/)?)/
     ]
 
     contains: [
@@ -25,7 +27,7 @@
             0: "number"
         }
         { // key
-            match: /(/+include("key")+/)/+include("ws")+/=/
+            match: include("tododot")+/(/+include("tododot")+include("key")+/)/+include("ws")+include("tododot")+/=/
             recordAllGroups: true
             1: "variable"
             2: "strEscape"
@@ -34,7 +36,7 @@
             5: "error"
         }
         { // table
-            match: include("bg")+include("ws")+/(?:\[{2}/+include("ws")+include("key")+include("ws")+/\]{2}|\[/+include("ws")+include("key")+include("ws")+/\])/
+            match: include("bg")+include("ws")+/(?:\[{2}/+include("ws")+include("tododot")+include("key")+include("ws")+include("tododot")+/\]{2}|\[/+include("ws")+include("tododot")+include("key")+include("ws")+include("tododot")+/\])/
             recordAllGroups: true
             0: "propKey"
             1: "constant"
@@ -75,15 +77,15 @@
             2: "error"
         }
         { // boolean
-            match: /true|false/
+            match: include("nonkey")+/(?:true|false)/
             0: "number"
         }
         { // float
-            match: /(?<!\w)(?:[+\-]?(?:[1-9](?:_?\d)+|\d)(?:(?:[eE][+\-]?\d(?:\d|_\d)*)|(?:\.\d(?:\d|_\d)*)(?:[eE][+\-]?\d(?:\d|_\d)*)?)|(?:[+\-]?(?:inf|nan)))(?!\w)/,
+            match: include("nonkey")+/(?<!\w)(?:[+\-]?(?:[1-9](?:_?\d)+|\d)(?:(?:[eE][+\-]?\d(?:\d|_\d)*)|(?:\.\d(?:\d|_\d)*)(?:[eE][+\-]?\d(?:\d|_\d)*)?)|(?:[+\-]?(?:inf|nan)))(?!\w)/,
             0: "number"
         }
         { // integer
-            match: /(?<!\w)(?:0(?:x/+include("HEXDIG")+/(?:/+include("HEXDIG")+/|_/+include("HEXDIG")+/)*|o[0-7](?:[0-7]|_[0-7])*|b[01](?:[01]|_[01])*)|[+\-]?(?:[1-9](?:\d|_\d)+|\d))(?!\w)/
+            match: include("nonkey")+/(?<!\w)(?:0(?:x/+include("HEXDIG")+/(?:/+include("HEXDIG")+/|_/+include("HEXDIG")+/)*|o[0-7](?:[0-7]|_[0-7])*|b[01](?:[01]|_[01])*)|[+\-]?(?:[1-9](?:\d|_\d)+|\d))(?!\w)/
             0: "number"
         }
     ]
