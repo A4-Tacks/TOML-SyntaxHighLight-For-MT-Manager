@@ -1,7 +1,7 @@
 {
     // @author: A4-Tacks
     // @email: <wdsjxhno1001@163.com>
-    // @last-edit-date: 2024-03-06
+    // @last-edit-date: 2025-03-06
     // @repo: https://github.com/A4-Tacks/TOML-SyntaxHighLight-For-MT-Manager
     name: ["TOML", ".toml"]
     hide: false
@@ -16,7 +16,7 @@
         "quoted-key": /(?:"(?:(/+include("escaped")+/)|[ \t!#-\[\]-~\x80-\ud7ff\ue000-\x{10ffff}])*"|'[\t -&(-~\x80-\ud7ff\ue000-\x{10ffff}]*')/ // (strEscape,error)
         "unquoted-key": /(?:[A-Za-z0-9\-_]+)/
         "simple-key": /(?:/+include("unquoted-key")+/|/+include("quoted-key")+/)/ // (strEscape,error)
-        "key": /(?:/+include("simple-key")+/(?:/+include("ws")+/\./+include("ws")+include("simple-key")+/)*)/ // (strEscape,error,strEscape,error)
+        "key": /(?:/+include("simple-key")+/(?:/+include("ws")+/(\.)/+include("ws")+include("simple-key")+/)*)/ // (strEscape,error,default,strEscape,error)
         "nonkey": /(?<!\.\s?\s?\s?)/
         "tododot": /(?:(?:\./+include("ws")+/)?)/
     ]
@@ -32,8 +32,9 @@
             1: "variable"
             2: "strEscape"
             3: "error"
-            4: "strEscape"
-            5: "error"
+            4: "default"
+            5: "strEscape"
+            6: "error"
         }
         { // table
             match: include("bg")+include("ws")+/(?:\[{2}/+include("ws")+include("tododot")+include("key")+include("ws")+include("tododot")+/\]{2}|\[/+include("ws")+include("tododot")+include("key")+include("ws")+include("tododot")+/\])/
@@ -41,12 +42,14 @@
             0: "propKey"
             1: "constant"
             2: "error"
-            3: "constant"
-            4: "error"
-            5: "constant"
-            6: "error"
-            7: "constant"
-            8: "error"
+            3: "default"
+            4: "constant"
+            5: "error"
+            6: "constant"
+            7: "error"
+            8: "default"
+            9: "constant"
+            10: "error"
         }
         { // ml string
             start: {match: /"""/}
