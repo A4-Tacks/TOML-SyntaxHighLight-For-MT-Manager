@@ -4,7 +4,6 @@
     // @last-edit-date: 2025-08-08
     // @repo: https://github.com/A4-Tacks/TOML-SyntaxHighLight-For-MT-Manager
     name: ["TOML", ".toml"]
-    hide: false
 
     comment: {startsWith: "#"}
 
