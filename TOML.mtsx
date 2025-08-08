@@ -1,7 +1,7 @@
 {
     // @author: A4-Tacks
     // @email: wdsjxhno1001@163.com
-    // @last-edit-date: 2025-03-06
+    // @last-edit-date: 2025-08-08
     // @repo: https://github.com/A4-Tacks/TOML-SyntaxHighLight-For-MT-Manager
     name: ["TOML", ".toml"]
     hide: false
@@ -54,7 +54,7 @@
         { // ml string
             start: {match: /"""/}
             end: {match: /"""/}
-            color: "string"
+            style: "string"
             contains: [
                 {
                     match: /\x5c/+include("ws")+/(?:\n|\r\n)/
@@ -70,7 +70,7 @@
         { // ml literal string
             start: {match: /'''/}
             end: {match: /'''/}
-            color: "string"
+            style: "string"
         }
         { // inline string
             match: include("quoted-key")
